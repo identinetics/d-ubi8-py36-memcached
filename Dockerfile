@@ -1,4 +1,5 @@
 FROM registry.access.redhat.com/ubi8/python-36
+#FROM localhost/intra/ubi8-py36
 
 USER root
 
