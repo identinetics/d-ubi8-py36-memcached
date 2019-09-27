@@ -1,0 +1,10 @@
+= Docker Base Image for 'RHEL 8 + Python 3.6 + memcached
+
+This image is a work-around for legacy VMs that build on Centos7,
+but cannot run `yum install memcached` because there is no subscription to the redhat repo.
+
+== Usage
+
+Reference this image in the downstream project's Dockerfile FROM clause.
+
+Create a Jenkins job that will update this image on a regular basis (e.g. daily).
