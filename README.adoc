@@ -12,16 +12,25 @@ Create a Jenkins job that will update this image on a regular basis (e.g. daily)
 
 == Process to prep this image on RHEL VM without Jenkins
 
-# prerequiste: rhel 8 subscription active
-podman login registry.redhat.io
-podman pull registry.access.redhat.com/ubi8/python-36:latest
-podman tag registry.access.redhat.com/ubi8/python-36:latest intra/ubi8-py36
+    # prerequiste: rhel 8 subscription active
+    podman login registry.redhat.io
+    podman pull registry.access.redhat.com/ubi8/python-36:latest
+    podman tag registry.access.redhat.com/ubi8/python-36:latest intra/ubi8-py36
 
-git clone https://github.com/rhoerbe/d-ubi8-py36-memcached
-cd d-ubi8-py36-memcached
-buildah bud -t intra/ubi8-py36-memcached .
+    git clone https://github.com/rhoerbe/d-ubi8-py36-memcached
+    cd d-ubi8-py36-memcached
+    buildah bud -t intra/ubi8-py36-memcached .
 
-podman login docker.io -u=r2h2
-podman push docker.io/r2h2/ubi8-py36-memcached
+    podman login docker.io -u=r2h2
+    podman push docker.io/r2h2/ubi8-py36-memcached
 
-# on target centos7 VM pull this image and tag it as intra/ubi8-py36-memcached
+    # on target centos7 VM pull this image and tag it as intra/ubi8-py36-memcached
+
+    # OR
+
+    podman image save -o /tmp/ubi8-py36-memcached.img docker.io/r2h2/ubi8-py36-memcached
+    scp  /tmp/ubi8-py36-memcached.img docker.io/r2h2/ubi8-py36-memcached r2h2@devl11:/tmp/
+
+    # @devl11
+    docker load -i /tmp/ubi8-py36-memcached.img
+    docker tag docker.io/r2h2/ubi8-py36-memcached intra/ubi8-py36-memcached
